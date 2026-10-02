@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { GridPage } from './components/grid-page/grid-page';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [GridPage],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
   protected readonly title = signal('test-project-grid');

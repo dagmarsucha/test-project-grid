@@ -1,0 +1,19 @@
+<div class="l-grid u-justify-end">
+  <div class="l-grid__col">
+    <div class="selector-wrapper" [class.u-highlight]="!hasSelected()">
+      <pf-select
+        class="c-select"
+        placeholder="Choose grid type"
+        [(value)]="gridType"
+        (valueChange)="hasSelected.set(true)"
+      >
+        <pf-select-option [value]="'mosaic'"
+          ><pf-icon name="2-1-tiles" slot="prepend"></pf-icon>Mosaic</pf-select-option
+        >
+        <pf-select-option [value]="'regular'"
+          ><pf-icon name="3-tiles" slot="prepend"></pf-icon>Regular</pf-select-option
+        >
+      </pf-select>
+    </div>
+  </div>
+</div>
