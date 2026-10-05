@@ -1,4 +1,6 @@
 @use '@papirfly-ui/core/scss/api/layout/grid/variables' as grid;
+@use '@papirfly-ui/core/scss/api/skin';
+@use '@papirfly-ui/core/scss/api/tools/breakpoints' as *;
 
 .image-title {
   text-align: center;
@@ -18,4 +20,22 @@
   padding-top: calc(50% - #{grid.$grid-gutter-x} / 2);
   content: '';
   display: block;
+
+  @include media-query($to: skin.$breakpoint-md) {
+    padding-top: 75%;
+    content: '';
+    display: block;
+  }
+}
+
+.ratio-rectangle:after {
+  padding-top: 100%;
+  content: '';
+  display: block;
+
+  @include media-query($to: skin.$breakpoint-md) {
+    padding-top: 75%;
+    content: '';
+    display: block;
+  }
 }

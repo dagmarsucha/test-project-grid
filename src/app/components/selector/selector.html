@@ -1,6 +1,9 @@
-<div class="l-grid u-justify-end">
-  <div class="l-grid__col">
-    <div class="selector-wrapper" [class.u-highlight]="!hasSelected()">
+<div class="l-grid selector-wrapper">
+  <div class="l-grid__col l-grid__col--12 l-grid__col--6@sm l-grid__col--4@lg">
+    <label for="input" class="c-form-label">
+      <span>Choose grid type</span>
+    </label>
+    <div [class.u-highlight]="!hasSelected()">
       <pf-select
         class="c-select"
         placeholder="Choose grid type"

@@ -18,7 +18,7 @@ export class ImageItem {
       return 'o-ratio--4-3';
     } else {
       const position = this.index() % 6;
-      return position === 2 || position === 3 ? 'ratio-wide' : 'o-ratio--1-1';
+      return position === 2 || position === 3 ? 'ratio-wide' : 'ratio-rectangle';
     }
   });
 }
