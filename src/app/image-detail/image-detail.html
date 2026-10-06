@@ -1,0 +1,17 @@
+<div class="l-container@lg u-mt-3">
+  <a routerLink="/" class="u-mt-3 u-gray-1100">← {{ 'CORE:BACK' | translate }}</a>
+
+  @if (image(); as img) {
+    <h1 class="u-mt-3 u-fs-8">{{ 'CORE:TITLE' | translate }}: {{ img.title }}</h1>
+    <button (click)="downloadFile(img.url, img.title)">
+      <div class="u-d-fx u-align-items-center u-ff-primary u-py-4 u-gray-1100">
+        <pf-icon class="u-mr-2" name="download" slot="prepend"></pf-icon>
+        {{ 'CORE:DOWNLOAD' | translate }}
+      </div>
+    </button>
+
+    <img class="u-br-6" [src]="img.url" [alt]="img.title" />
+  } @else {
+    <p>{{ 'CORE:VIEW_DAM_CONTENT_NOT_FOUND_ERROR' | translate }}</p>
+  }
+</div>

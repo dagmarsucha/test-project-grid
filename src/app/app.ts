@@ -1,9 +1,11 @@
 import { Component, signal } from '@angular/core';
-import { GridPage } from './components/grid-page/grid-page';
+import { RouterModule } from '@angular/router';
+import { Footer } from './layout/footer/footer';
+import { HeaderBar } from './layout/header-bar/header-bar';
 
 @Component({
   selector: 'app-root',
-  imports: [GridPage],
+  imports: [HeaderBar, Footer, RouterModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

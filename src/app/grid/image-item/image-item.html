@@ -1,0 +1,11 @@
+<a
+  class="o-ratio u-br-6 u-cur-p"
+  [class]="aspectRatioClasses()"
+  [routerLink]="['/image-detail', id()]"
+>
+  <div class="image-overlay s-typo"></div>
+  <img class="image" [src]="imageUrl()" [alt]="title()" />
+  <p class="image-title u-abs-center u-gray-100 u-fs-5 u-mat-body-semibold">
+    {{ title() }}
+  </p>
+</a>

@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { IGridType } from '../../commonTypes';
+import { IGridType } from '../../shared/commonTypes';
 import { Selector } from '../selector/selector';
 import { TileView } from '../tile-view/tile-view';
 

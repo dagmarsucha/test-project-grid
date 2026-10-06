@@ -1,8 +1,8 @@
 import { Component, model, signal } from '@angular/core';
 import { IconsRegistryService, PfIconModule } from '@papirfly-ui/angular/icon';
 import { PfSelectModule } from '@papirfly-ui/angular/select';
-import { completeIconSet } from '@papirfly-ui/icons';
-import { IGridType } from '../../commonTypes';
+import { papirflyIcons21Tiles, papirflyIcons3Tiles } from '@papirfly-ui/icons';
+import { IGridType } from '../../shared/commonTypes';
 
 @Component({
   selector: 'selector',
@@ -11,10 +11,10 @@ import { IGridType } from '../../commonTypes';
   styleUrl: './selector.scss',
 })
 export class Selector {
-  gridType = model<IGridType>('regular');
+  gridType = model.required<IGridType>();
   protected readonly hasSelected = signal(false);
 
   constructor(private _iconsRegistryService: IconsRegistryService) {
-    this._iconsRegistryService.registerIcons(completeIconSet);
+    this._iconsRegistryService.registerIcons([papirflyIcons21Tiles, papirflyIcons3Tiles]);
   }
 }

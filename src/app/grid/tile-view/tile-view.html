@@ -1,0 +1,13 @@
+<div class="l-grid u-px-2">
+  @for (item of imageData; track item.id) {
+    <image-item
+      class="l-grid__col l-grid__col--12 l-grid__col--6@sm image-wrapper"
+      [class]="colMdClasses()[$index]"
+      [imageUrl]="item.url"
+      [title]="item.title"
+      [gridType]="gridType()"
+      [index]="$index"
+      [id]="item.id"
+    ></image-item>
+  }
+</div>
