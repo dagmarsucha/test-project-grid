@@ -8,6 +8,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { PfxTranslateModule } from '@papirfly-ui/angular-extensions/translate';
+import { PfNotificationModule } from '@papirfly-ui/angular/notification';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -19,10 +20,15 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     importProvidersFrom(
       PfxTranslateModule.forRoot({
-        translationSets: [{ set: 'core', repository: 'i18n-shared' }],
+        translationSets: [
+          { set: 'core', repository: 'i18n-shared' },
+          { set: 'point/general', repository: 'i18n-point' },
+          { set: 'point/tiles', repository: 'i18n-point' },
+        ],
         defaultSet: 'core',
-        //laeId: 4, //spanish
+        // laeId: 4, //spanish
       }),
+      PfNotificationModule.forRoot({ horizontalAlign: 'center', verticalAlign: 'top' }),
     ),
   ],
 };

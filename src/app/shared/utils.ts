@@ -1,4 +1,4 @@
-import { IGridType } from './commonTypes';
+import { GridType } from './commonTypes';
 
 // Mosaic pattern repeats every 6 tiles: tiles 3 and 4 are wide, the rest narrow
 export function isWideTile(index: number): boolean {
@@ -6,7 +6,7 @@ export function isWideTile(index: number): boolean {
   return position === 2 || position === 3;
 }
 
-export function getAspectRatioClass(gridType: IGridType, index: number): string {
+export function getAspectRatioClass(gridType: GridType, index: number): string {
   if (gridType === 'regular') {
     return 'o-ratio--4-3';
   }

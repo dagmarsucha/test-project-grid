@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IGridType } from '../../shared/commonTypes';
+import { GridType } from '../../shared/commonTypes';
 import { getAspectRatioClass } from '../../shared/utils';
 
 @Component({
@@ -13,7 +13,7 @@ export class ImageItem {
   id = input.required<number>();
   imageUrl = input('');
   title = input('');
-  gridType = input<IGridType>('regular');
+  gridType = input<GridType>('regular');
   index = input(0);
 
   protected readonly aspectRatioClasses = computed(() =>

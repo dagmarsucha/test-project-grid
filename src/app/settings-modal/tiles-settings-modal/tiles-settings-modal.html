@@ -1,0 +1,98 @@
+<div
+  class="c-modal c-modal--split is-active"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modal-title"
+  aria-modal="true"
+>
+  <form class="u-d-fx" [formGroup]="form" (ngSubmit)="onSave()">
+    <div class="c-modal__dialog" role="document">
+      <div class="c-modal__inner">
+        <div class="c-modal__split-container">
+          <div class="c-modal__sidebar">
+            <div class="heading u-d-fx u-p-6">
+              <pf-icon
+                class="u-w-f16 u-h-f16 u-mr-2 u-primary-600"
+                name="squares"
+                slot="prepend"
+              ></pf-icon>
+              <h1 class="u-mat-h-xs">{{ 'CORE:SETTINGS' | translate }}</h1>
+            </div>
+            <div class="c-tabs c-modal--scrollable">
+              <ul class="c-tabs__list">
+                <li class="c-tabs__item u-ml-6" [class.is-active]="currentTab() === 'general'">
+                  <button
+                    type="button"
+                    id="tab-1"
+                    class="c-tabs__link"
+                    aria-controls="tab-1-content"
+                    (click)="onTabClick('general')"
+                  >
+                    <span class="c-tabs__label">{{ 'CORE:GENERAL' | translate }}</span>
+                  </button>
+                </li>
+
+                <li class="c-tabs__item" [class.is-active]="currentTab() === 'animations'">
+                  <button
+                    type="button"
+                    id="tab-2"
+                    class="c-tabs__link"
+                    aria-controls="tab-2-content"
+                    (click)="onTabClick('animations')"
+                  >
+                    <span class="c-tabs__label">Animations</span>
+                  </button>
+                </li>
+              </ul>
+              <div class="c-tabs__content u-px-6">
+                @if (currentTab() === 'general') {
+                  <div class="c-tabs__block is-active" id="tab-1-content">
+                    <tab-general [form]="form.controls.general"></tab-general>
+                  </div>
+                }
+                @if (currentTab() === 'animations') {
+                  <div class="c-tabs__block is-active" id="tab-2-content">
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis condimentum
+                      augue id magna semper rutrum. Etiam commodo dui eget wisi.
+                    </p>
+                    <br />
+                    <p>
+                      Proin in tellus sit amet nibh dignissim sagittis. In sem justo, commodo ut,
+                      suscipit at, pharetra vitae, orci. Itaque earum rerum hic tenetur a sapiente
+                      delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut
+                      perferendis doloribus asperiores repellat. Integer imperdiet lectus quis
+                      justo.
+                    </p>
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="c-modal__footer">
+              <button type="submit" class="c-button c-button--primary c-button--fluid u-my-4">
+                <pf-icon class="u-w-f16 u-h-f16 u-mr-2" name="save" slot="prepend"></pf-icon>
+                <span class="c-button__text">{{ 'CORE:SAVE' | translate }}</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="c-modal__main">
+            <div class="c-modal__header">
+              <button type="button" class="c-button c-button--close" (click)="onClose()">
+                <span class="c-button__text">Close</span>
+                <span class="c-button__slot">
+                  <pf-icon name="cross"></pf-icon>
+                </span>
+              </button>
+            </div>
+
+            <div class="u-px-4 u-pt-2">
+              <h2 class="u-mb-8">{{ 'component.basic_tiles.tiles_title' | translate }}</h2>
+              <items-list [items]="form.controls.items"></items-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

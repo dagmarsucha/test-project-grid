@@ -1,0 +1,105 @@
+<div class="c-table u-wmin-100" style="width: max-content">
+  <div class="c-table__container">
+    <div class="c-table__header-row">
+      <div class="c-table__header-cell" style="flex: initial; flex-shrink: 0">
+        <div class="c-check c-check--multiple c-check--spaceless">
+          <input class="c-check__control" type="checkbox" aria-label="Select all rows" />
+        </div>
+      </div>
+      <div class="c-table__header-cell" style="flex-grow: 1">
+        <span>BG</span>
+      </div>
+      <div class="c-table__header-cell" style="flex-grow: 1">
+        <span>{{ 'CORE:FOCUS' | translate }}</span>
+      </div>
+      <div class="c-table__header-cell" style="flex-grow: 2">
+        <span>{{ 'CORE:HEADING' | translate }}</span>
+      </div>
+      <div class="c-table__header-cell u-justify-end" style="flex-grow: 1">
+        <span>{{ 'CORE:MORE' | translate }}</span>
+      </div>
+      <div class="c-table__header-cell u-justify-end" style="flex-grow: 1">
+        <span>{{ 'CORE:INVERSE' | translate }}</span>
+      </div>
+      <div class="c-table__header-cell u-justify-end" style="flex-grow: 1">
+        <span>{{ 'CORE:ACTIONS' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="c-table__body">
+      @for (row of items().controls; track row.controls.id.value) {
+        <div [formGroup]="row" class="c-table__row" tabindex="0" style="--pf-table-row-level: 1">
+          <div class="c-table__cell" style="flex: initial; flex-shrink: 0">
+            <div class="c-check c-check--spaceless">
+              <input class="c-check__control" type="checkbox" aria-label="Select row " />
+            </div>
+          </div>
+          <div class="c-table__cell" style="flex-grow: 1">
+            @let background = row.controls.background.value;
+            <pfx-background-picker
+              [color]="background.color"
+              (colorChange)="updateBackground(row, { color: $event })"
+              [imagePath]="background.imagePath"
+              (imagePathChange)="updateBackground(row, { imagePath: $event })"
+              [imageName]="background.imageName"
+              (imageNameChange)="updateBackground(row, { imageName: $event })"
+              [opacity]="background.opacity"
+              (opacityChange)="updateBackground(row, { opacity: '' + $event })"
+              [isVideo]="background.isVideo"
+              (isVideoChange)="updateBackground(row, { isVideo: $event })"
+              [asset]="background.asset"
+              (assetChange)="updateAsset(row, $event)"
+              [comId]="10930"
+              [laeId]="2"
+            ></pfx-background-picker>
+          </div>
+          <div class="c-table__cell" style="flex-grow: 1">
+            <pfx-focus-picker
+              [focusValue]="row.controls.focus.value"
+              (focusValueChange)="
+                row.controls.focus.setValue($event); row.controls.focus.markAsDirty()
+              "
+              [disabled]="row.controls.focus.disabled"
+            ></pfx-focus-picker>
+          </div>
+          <div class="c-table__cell" style="flex-grow: 2">
+            <div class="c-form-control c-form-control--small">
+              <input
+                id="title"
+                spellcheck="false"
+                autocomplete="off"
+                placeholder="Placeholder"
+                type="text"
+                aria-describedby="control-note"
+                formControlName="text"
+              />
+            </div>
+          </div>
+          <div class="c-table__cell" style="flex-grow: 1">
+            <div class="u-mat-body u-text-secondary-100"></div>
+          </div>
+          <div class="c-table__cell u-justify-end" style="flex-grow: 1">
+            <div class="u-mat-body u-text-secondary-100">
+              <div class="c-switch c-switch--spaceless">
+                <input
+                  class="c-switch__input"
+                  type="checkbox"
+                  name="switch"
+                  id="switchInverse"
+                  aria-describedby="switch-note"
+                  role="switch"
+                  formControlName="inverse"
+                />
+
+                <div class="c-switch__control"></div>
+              </div>
+            </div>
+          </div>
+          <div class="c-table__cell" style="flex-grow: 1">
+            <div class="u-mat-body u-text-secondary-100"></div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

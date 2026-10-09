@@ -1,0 +1,153 @@
+<ng-container [formGroup]="form()">
+  <!-- style dropdown -->
+  <div class="u-my-4">
+    <label for="style" class="c-form-label">
+      <span>{{ 'CORE:STYLE' | translate }} </span>
+    </label>
+
+    <pf-select
+      id="style"
+      spellcheck="false"
+      autocomplete="off"
+      placeholder="Placeholder"
+      aria-describedby="control-note"
+      formControlName="styles"
+      size="small"
+    >
+      @for (option of styleOptions; track option.value) {
+        <pf-select-option [value]="option.value">
+          <pf-icon [name]="option.icon" slot="prepend"></pf-icon>
+          {{ option.title | translate: { set: option.set } }}
+        </pf-select-option>
+      }
+    </pf-select>
+  </div>
+
+  <!-- display dropdown -->
+  <div class="u-my-4">
+    <label for="display" class="c-form-label text-primary-100">
+      <span>{{ 'CORE:DISPLAY' | translate }}</span>
+    </label>
+
+    <pf-select
+      id="style"
+      spellcheck="false"
+      autocomplete="off"
+      placeholder="Placeholder"
+      value="Value"
+      aria-describedby="control-note"
+      formControlName="display"
+      size="small"
+    >
+      @for (option of displayOptions; track option.value) {
+        <pf-select-option [value]="option.value"
+          ><pf-icon [name]="option.icon" slot="prepend"></pf-icon
+          >{{ option.title | translate }}</pf-select-option
+        >
+      }
+    </pf-select>
+  </div>
+
+  <!-- divider -->
+  <div class="o-divider o-divider--horizontal u-w-100 u-b-gray-400 u-my-4"></div>
+
+  <!-- title -->
+  <div class="l-grid u-my-1">
+    <div class="l-grid__col l-grid__col--5 u-align-self-center">
+      <label for="title" class="c-form-label u-m-0">
+        <span>{{ 'CORE:TITLE' | translate }}</span>
+      </label>
+    </div>
+    <div class="l-grid__col l-grid__col--7 u-mb-4">
+      <div class="c-form-control c-form-control--small">
+        <input
+          id="title"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder="Placeholder"
+          type="text"
+          aria-describedby="control-note"
+          formControlName="title"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- subtitle -->
+  <div class="l-grid u-my-1">
+    <div class="l-grid__col l-grid__col--5 u-align-self-center">
+      <label for="displayText" class="c-form-label u-m-0">
+        <span>{{ 'CORE:SUBTITLE' | translate }}</span>
+      </label>
+    </div>
+    <div class="l-grid__col l-grid__col--7 u-mb-4">
+      <div class="c-form-control c-form-control--small">
+        <input
+          id="displayText"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder="Placeholder"
+          type="text"
+          aria-describedby="control-note"
+          formControlName="subtitle"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- background picker -->
+  <div class="l-grid u-mb-0">
+    <div class="l-grid__col l-grid__col--6">
+      <label for="switchInverse" class="c-switch__label u-m-0">
+        <span>{{ 'CORE:BACKGROUND' | translate }}</span>
+      </label>
+    </div>
+    <div class="l-grid__col l-grid__col--6 u-ta-r u-mb-4">
+      <div class="c-form-control c-form-control--small">
+        @let background = form().controls.background.value;
+        <pfx-background-picker
+          [color]="background.color"
+          (colorChange)="updateBackground({ color: $event })"
+          [imagePath]="background.imagePath"
+          (imagePathChange)="updateBackground({ imagePath: $event })"
+          [imageName]="background.imageName"
+          (imageNameChange)="updateBackground({ imageName: $event })"
+          [opacity]="background.opacity"
+          (opacityChange)="updateBackground({ opacity: '' + $event })"
+          [isVideo]="background.isVideo"
+          (isVideoChange)="updateBackground({ isVideo: $event })"
+          [asset]="background.asset"
+          (assetChange)="updateAsset($event)"
+          [comId]="10930"
+          [laeId]="2"
+        ></pfx-background-picker>
+      </div>
+    </div>
+  </div>
+
+  <!-- inverse -->
+  <div class="l-grid u-my-0">
+    <div class="l-grid__col l-grid__col--6">
+      <label for="switchInverse" class="c-switch__label">
+        <span>{{ 'CORE:INVERSE' | translate }}</span>
+      </label>
+    </div>
+    <div class="l-grid__col l-grid__col--6 u-ta-r">
+      <div class="c-form-control c-form-control--small">
+        <div class="c-switch c-switch--spaceless">
+          <input
+            class="c-switch__input"
+            type="checkbox"
+            name="switch"
+            id="switchInverse"
+            aria-describedby="switch-note"
+            role="switch"
+            formControlName="inverse"
+          />
+
+          <div class="c-switch__control"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
