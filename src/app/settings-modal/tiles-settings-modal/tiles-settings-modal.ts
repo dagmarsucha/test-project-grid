@@ -1,9 +1,12 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormControl, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { getState } from '@ngrx/signals';
-import { PfxTranslateDynamicPipe } from '@papirfly-ui/angular-extensions/translate';
+import {
+  PfxTranslateDynamicPipe,
+  PfxTranslateService,
+} from '@papirfly-ui/angular-extensions/translate';
 import { IconsRegistryService, PfIconModule } from '@papirfly-ui/angular/icon';
-import { PfModalConfig, PfModalRef } from '@papirfly-ui/angular/modal';
+import { PfModalRef } from '@papirfly-ui/angular/modal';
 import {
   papirflyIcons21Tiles,
   papirflyIconsCross,
@@ -23,20 +26,18 @@ export type SettingsTabsType = 'general' | 'animations';
   templateUrl: './tiles-settings-modal.html',
   styleUrl: './tiles-settings-modal.scss',
 })
-export class TilesSettingsModal implements OnInit {
-  settings = new FormControl('');
+export class TilesSettingsModal {
   private readonly _store = inject(SettingsStore);
   private readonly _fb = inject(NonNullableFormBuilder);
+  private readonly _modalRef = inject(PfModalRef);
+  private readonly _translateService = inject(PfxTranslateService);
+  private readonly _iconsRegistryService = inject(IconsRegistryService);
 
   protected readonly form = createSettingsForm(this._fb);
 
   protected readonly currentTab = signal<SettingsTabsType>('general');
 
-  constructor(
-    private _iconsRegistryService: IconsRegistryService,
-    private _modalRef: PfModalRef,
-    private _modalConfig: PfModalConfig,
-  ) {
+  constructor() {
     this._iconsRegistryService.registerIcons([
       papirflyIconsSquares,
       papirflyIcons21Tiles,
@@ -47,12 +48,13 @@ export class TilesSettingsModal implements OnInit {
     fillSettingsForm(this.form, this._fb, getState(this._store));
   }
 
-  ngOnInit() {
-    // console.log(this._modalConfig);
-  }
-
-  protected onClose() {
-    this._modalRef.close('assetId');
+  protected onClose(): void {
+    // Closing throws the form away, so check before losing unsaved edits
+    const question = `${this._translateService.translate('CORE:DISCARD_CHANGES')}?`;
+    if (this.form.dirty && !window.confirm(question)) {
+      return;
+    }
+    this._modalRef.close(false);
   }
 
   protected onSave(): void {

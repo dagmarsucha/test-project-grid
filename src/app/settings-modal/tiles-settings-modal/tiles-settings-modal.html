@@ -19,11 +19,17 @@
               <h1 class="u-mat-h-xs">{{ 'CORE:SETTINGS' | translate }}</h1>
             </div>
             <div class="c-tabs c-modal--scrollable">
-              <ul class="c-tabs__list">
-                <li class="c-tabs__item u-ml-6" [class.is-active]="currentTab() === 'general'">
+              <ul class="c-tabs__list" role="tablist">
+                <li
+                  class="c-tabs__item u-ml-6"
+                  role="presentation"
+                  [class.is-active]="currentTab() === 'general'"
+                >
                   <button
                     type="button"
                     id="tab-1"
+                    role="tab"
+                    [attr.aria-selected]="currentTab() === 'general'"
                     class="c-tabs__link"
                     aria-controls="tab-1-content"
                     (click)="onTabClick('general')"
@@ -32,26 +38,42 @@
                   </button>
                 </li>
 
-                <li class="c-tabs__item" [class.is-active]="currentTab() === 'animations'">
+                <li
+                  class="c-tabs__item"
+                  role="presentation"
+                  [class.is-active]="currentTab() === 'animations'"
+                >
                   <button
                     type="button"
                     id="tab-2"
+                    role="tab"
+                    [attr.aria-selected]="currentTab() === 'animations'"
                     class="c-tabs__link"
                     aria-controls="tab-2-content"
                     (click)="onTabClick('animations')"
                   >
-                    <span class="c-tabs__label">Animations</span>
+                    <span class="c-tabs__label">{{ 'component.basic_tiles.animations' | translate: { set: 'point/tiles' } }}</span>
                   </button>
                 </li>
               </ul>
               <div class="c-tabs__content u-px-6">
                 @if (currentTab() === 'general') {
-                  <div class="c-tabs__block is-active" id="tab-1-content">
+                  <div
+                    class="c-tabs__block is-active"
+                    id="tab-1-content"
+                    role="tabpanel"
+                    aria-labelledby="tab-1"
+                  >
                     <tab-general [form]="form.controls.general"></tab-general>
                   </div>
                 }
                 @if (currentTab() === 'animations') {
-                  <div class="c-tabs__block is-active" id="tab-2-content">
+                  <div
+                    class="c-tabs__block is-active"
+                    id="tab-2-content"
+                    role="tabpanel"
+                    aria-labelledby="tab-2"
+                  >
                     <p>
                       Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis condimentum
                       augue id magna semper rutrum. Etiam commodo dui eget wisi.
@@ -79,7 +101,7 @@
           <div class="c-modal__main">
             <div class="c-modal__header">
               <button type="button" class="c-button c-button--close" (click)="onClose()">
-                <span class="c-button__text">Close</span>
+                <span class="c-button__text">{{ 'CORE:CLOSE' | translate }}</span>
                 <span class="c-button__slot">
                   <pf-icon name="cross"></pf-icon>
                 </span>

@@ -45,25 +45,15 @@ export const SettingsStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withMethods((store, http = inject(HttpClient)) => ({
-    update(changes: Partial<IComponentResponse>) {
-      patchState(store, changes);
-    },
     loadSettings() {
-      patchState(store);
       http
         .get<IComponentResponse>(COMPONENT_URL, {
           params: { mode: 'editor', do: 'control-22815-load' },
           headers: AJAX_HEADERS,
         })
         .subscribe({
-          next: (response) => {
-            patchState(store, { ...response });
-            console.log(response);
-          },
-          error: (err) => {
-            console.error('Loading settings failed:', err);
-            patchState(store);
-          },
+          next: (response) => patchState(store, response),
+          error: (err) => console.error('Loading settings failed:', err),
         });
     },
     // Sends the whole object the server loaded, with the changes applied. The server

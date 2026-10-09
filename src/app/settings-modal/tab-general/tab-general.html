@@ -9,8 +9,6 @@
       id="style"
       spellcheck="false"
       autocomplete="off"
-      placeholder="Placeholder"
-      aria-describedby="control-note"
       formControlName="styles"
       size="small"
     >
@@ -30,12 +28,9 @@
     </label>
 
     <pf-select
-      id="style"
+      id="display"
       spellcheck="false"
       autocomplete="off"
-      placeholder="Placeholder"
-      value="Value"
-      aria-describedby="control-note"
       formControlName="display"
       size="small"
     >
@@ -64,9 +59,7 @@
           id="title"
           spellcheck="false"
           autocomplete="off"
-          placeholder="Placeholder"
           type="text"
-          aria-describedby="control-note"
           formControlName="title"
         />
       </div>
@@ -76,19 +69,17 @@
   <!-- subtitle -->
   <div class="l-grid u-my-1">
     <div class="l-grid__col l-grid__col--5 u-align-self-center">
-      <label for="displayText" class="c-form-label u-m-0">
+      <label for="subtitle" class="c-form-label u-m-0">
         <span>{{ 'CORE:SUBTITLE' | translate }}</span>
       </label>
     </div>
     <div class="l-grid__col l-grid__col--7 u-mb-4">
       <div class="c-form-control c-form-control--small">
         <input
-          id="displayText"
+          id="subtitle"
           spellcheck="false"
           autocomplete="off"
-          placeholder="Placeholder"
           type="text"
-          aria-describedby="control-note"
           formControlName="subtitle"
         />
       </div>
@@ -98,9 +89,8 @@
   <!-- background picker -->
   <div class="l-grid u-mb-0">
     <div class="l-grid__col l-grid__col--6">
-      <label for="switchInverse" class="c-switch__label u-m-0">
-        <span>{{ 'CORE:BACKGROUND' | translate }}</span>
-      </label>
+      <!-- The picker isn't a native form field, so it's labelled with ariaLabel instead of for= -->
+      <span class="c-switch__label u-m-0">{{ 'CORE:BACKGROUND' | translate }}</span>
     </div>
     <div class="l-grid__col l-grid__col--6 u-ta-r u-mb-4">
       <div class="c-form-control c-form-control--small">
@@ -120,6 +110,7 @@
           (assetChange)="updateAsset($event)"
           [comId]="10930"
           [laeId]="2"
+          [ariaLabel]="'CORE:BACKGROUND' | translate"
         ></pfx-background-picker>
       </div>
     </div>
@@ -138,9 +129,7 @@
           <input
             class="c-switch__input"
             type="checkbox"
-            name="switch"
             id="switchInverse"
-            aria-describedby="switch-note"
             role="switch"
             formControlName="inverse"
           />

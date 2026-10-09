@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { PfModalModule, PfModalService } from '@papirfly-ui/angular/modal';
 import { GridType } from '../../shared/commonTypes';
 import { Selector } from '../selector/selector';
@@ -12,13 +12,12 @@ import { TilesSettingsModal } from '../../settings-modal/tiles-settings-modal/ti
   styleUrl: './grid-page.scss',
 })
 export class GridPage {
+  private readonly _dialog = inject(PfModalService);
+
   gridType = signal<GridType>('regular');
 
-  constructor(public dialog: PfModalService) {}
   openModal() {
-    const modalRef = this.dialog.open(TilesSettingsModal, {
-      data: { title: 'Test modal' },
-    });
+    const modalRef = this._dialog.open(TilesSettingsModal);
     modalRef.afterClosed$.subscribe((result) => {
       if (result) {
         console.log('Modal closed with data', result);

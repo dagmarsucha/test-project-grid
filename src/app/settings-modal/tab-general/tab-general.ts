@@ -9,13 +9,11 @@ import {
   papirflyIcons12Tiles,
   papirflyIcons3Tiles,
   papirflyIcons4Tiles,
-  papirflyIconsSave,
   papirflyIconsTilesMultiline2,
   papirflyIconsTilesMultiline8,
   papirflyIconsWidthFull,
 } from '@papirfly-ui/icons';
 import { DisplayType, IAsset, IBackground, StylesType } from '../../shared/commonTypes';
-import { SettingsStore } from '../../shared/settings-store';
 import { GeneralForm, patchBackground, patchBackgroundAsset } from '../settings-form';
 
 @Component({
@@ -31,7 +29,7 @@ import { GeneralForm, patchBackground, patchBackgroundAsset } from '../settings-
   styleUrl: './tab-general.scss',
 })
 export class TabGeneral {
-  protected readonly store = inject(SettingsStore);
+  private readonly _iconsRegistryService = inject(IconsRegistryService);
 
   form = input.required<GeneralForm>();
 
@@ -67,7 +65,7 @@ export class TabGeneral {
     patchBackgroundAsset(this.form().controls.background, asset);
   }
 
-  constructor(private _iconsRegistryService: IconsRegistryService) {
+  constructor() {
     this._iconsRegistryService.registerIcons([
       papirflyIcons11Tiles,
       papirflyIcons12Tiles,
@@ -75,7 +73,6 @@ export class TabGeneral {
       papirflyIcons4Tiles,
       papirflyIconsTilesMultiline8,
       papirflyIconsTilesMultiline2,
-      papirflyIconsSave,
       papirflyIconsWidthFull,
     ]);
   }

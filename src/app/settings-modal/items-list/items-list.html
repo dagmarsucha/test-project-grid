@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="c-table__header-cell" style="flex-grow: 1">
-        <span>BG</span>
+        <span>{{ 'GENERAL:BG' | translate: { set: 'point/general' } }}</span>
       </div>
       <div class="c-table__header-cell" style="flex-grow: 1">
         <span>{{ 'CORE:FOCUS' | translate }}</span>
@@ -31,7 +31,11 @@
         <div [formGroup]="row" class="c-table__row" tabindex="0" style="--pf-table-row-level: 1">
           <div class="c-table__cell" style="flex: initial; flex-shrink: 0">
             <div class="c-check c-check--spaceless">
-              <input class="c-check__control" type="checkbox" aria-label="Select row " />
+              <input
+                class="c-check__control"
+                type="checkbox"
+                [attr.aria-label]="'Select row ' + row.controls.text.value"
+              />
             </div>
           </div>
           <div class="c-table__cell" style="flex-grow: 1">
@@ -51,6 +55,7 @@
               (assetChange)="updateAsset(row, $event)"
               [comId]="10930"
               [laeId]="2"
+              [ariaLabel]="'CORE:BACKGROUND' | translate"
             ></pfx-background-picker>
           </div>
           <div class="c-table__cell" style="flex-grow: 1">
@@ -60,17 +65,17 @@
                 row.controls.focus.setValue($event); row.controls.focus.markAsDirty()
               "
               [disabled]="row.controls.focus.disabled"
+              [ariaLabel]="'CORE:FOCUS' | translate"
             ></pfx-focus-picker>
           </div>
           <div class="c-table__cell" style="flex-grow: 2">
             <div class="c-form-control c-form-control--small">
+              <!-- No id: rows repeat, so each input is named with aria-label instead -->
               <input
-                id="title"
                 spellcheck="false"
                 autocomplete="off"
-                placeholder="Placeholder"
                 type="text"
-                aria-describedby="control-note"
+                [attr.aria-label]="'CORE:HEADING' | translate"
                 formControlName="text"
               />
             </div>
@@ -84,10 +89,8 @@
                 <input
                   class="c-switch__input"
                   type="checkbox"
-                  name="switch"
-                  id="switchInverse"
-                  aria-describedby="switch-note"
                   role="switch"
+                  [attr.aria-label]="'CORE:INVERSE' | translate"
                   formControlName="inverse"
                 />
 
