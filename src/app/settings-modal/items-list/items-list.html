@@ -5,140 +5,143 @@
   </button>
 </div>
 
-<div class="c-table u-wmin-100" style="width: max-content">
-  <div class="c-table__container">
-    <div class="c-table__header-row">
-      <!-- Drag handle column -->
-      <div class="c-table__header-cell" style="flex: initial; flex-shrink: 0">
-        <div class="u-w-f16 u-h-f16"></div>
-      </div>
-
-      <div class="c-table__header-cell" style="flex-grow: 1">
-        <span>{{ 'GENERAL:BG' | translate: { set: 'point/general' } }}</span>
-      </div>
-      <div class="c-table__header-cell" style="flex-grow: 1">
-        <span>{{ 'CORE:FOCUS' | translate }}</span>
-      </div>
-      <div class="c-table__header-cell" style="flex-grow: 2">
-        <span>{{ 'CORE:HEADING' | translate }}</span>
-      </div>
-      <div class="c-table__header-cell u-justify-end" style="flex-grow: 1">
-        <span>{{ 'CORE:MORE' | translate }}</span>
-      </div>
-      <div class="c-table__header-cell u-justify-end" style="flex-grow: 1">
-        <span>{{ 'CORE:INVERSE' | translate }}</span>
-      </div>
-      <div class="c-table__header-cell u-justify-end" style="flex-grow: 1">
-        <span>{{ 'CORE:ACTIONS' | translate }}</span>
-      </div>
-    </div>
-
-    <div
-      class="c-table__body"
-      cdkDropList
-      cdkDropListLockAxis="y"
-      (cdkDropListDropped)="drop($event)"
-    >
-      @for (row of items().controls; track row; let index = $index) {
-        <div
-          [formGroup]="row"
-          class="c-table__row"
-          tabindex="0"
-          style="--pf-table-row-level: 1"
-          cdkDrag
-          cdkDragPreviewContainer="parent"
-        >
-          <div class="c-table__cell" style="flex: initial; flex-shrink: 0">
-            <div class="c-draggable-block__handle" cdkDragHandle>
-              <div class="c-draggable-block__prepend">
-                <pf-icon class="u-w-f16 u-h-f16" name="dots-grid-vertical"></pf-icon>
-              </div>
-            </div>
-          </div>
-
-          <div class="c-table__cell" style="flex-grow: 1">
-            @let background = row.controls.background.value;
-            <pfx-background-picker
-              [color]="background.color"
-              (colorChange)="updateBackground(row, { color: $event })"
-              [imagePath]="background.imagePath"
-              (imagePathChange)="updateBackground(row, { imagePath: $event })"
-              [imageName]="background.imageName"
-              (imageNameChange)="updateBackground(row, { imageName: $event })"
-              [opacity]="background.opacity"
-              (opacityChange)="updateBackground(row, { opacity: '' + $event })"
-              [isVideo]="background.isVideo"
-              (isVideoChange)="updateBackground(row, { isVideo: $event })"
-              [asset]="background.asset"
-              (assetChange)="updateAsset(row, $event)"
-              [comId]="10930"
-              [laeId]="2"
-              [ariaLabel]="'CORE:BACKGROUND' | translate"
-              class="dropdown-max-height"
-            ></pfx-background-picker>
-          </div>
-          <div class="c-table__cell" style="flex-grow: 1">
-            <pfx-focus-picker
-              [focusValue]="row.controls.focus.value"
-              (focusValueChange)="
-                row.controls.focus.setValue($event); row.controls.focus.markAsDirty()
-              "
-              [disabled]="row.controls.focus.disabled"
-              [ariaLabel]="'CORE:FOCUS' | translate"
-            ></pfx-focus-picker>
-          </div>
-          <div class="c-table__cell" style="flex-grow: 2">
-            <div class="c-form-control c-form-control--small">
-              <!-- No id: rows repeat, so each input is named with aria-label instead -->
-              <input
-                spellcheck="false"
-                autocomplete="off"
-                type="text"
-                [attr.aria-label]="'CORE:HEADING' | translate"
-                formControlName="text"
-              />
-            </div>
-          </div>
-          <div class="c-table__cell" style="flex-grow: 1">
-            <div class="u-mat-body u-text-secondary-100"></div>
-          </div>
-          <div class="c-table__cell u-justify-end" style="flex-grow: 1">
-            <div class="u-mat-body u-text-secondary-100">
-              <div class="c-switch c-switch--spaceless">
-                <input
-                  class="c-switch__input"
-                  type="checkbox"
-                  role="switch"
-                  [attr.aria-label]="'CORE:INVERSE' | translate"
-                  formControlName="inverse"
-                />
-
-                <div class="c-switch__control"></div>
-              </div>
-            </div>
-          </div>
-          <div class="c-table__cell" style="flex-grow: 1">
-            <button
-              type="button"
-              class="u-d-fx u-p-2 u-mr-1"
-              aria-label=" {{ 'CORE:DUPLICATE' | translate }}"
-              [pfTooltip]="'CORE:DUPLICATE' | translate"
-              (click)="duplicateItem(index)"
-            >
-              <pf-icon class="u-w-f16 u-h-f16" name="copy"></pf-icon>
-            </button>
-            <button
-              type="button"
-              class="u-d-fx u-p-2"
-              aria-label=" {{ 'CORE:DELETE' | translate }}"
-              [pfTooltip]="'CORE:DELETE' | translate"
-              (click)="deleteItem(index)"
-            >
-              <pf-icon class="u-w-f16 u-h-f16" name="trash"></pf-icon>
-            </button>
-          </div>
+<!-- c-table clips its overflow, so this wrapper does the horizontal scrolling -->
+<div class="items-list__scroll">
+  <div class="c-table u-wmin-100" style="width: max-content">
+    <div class="c-table__container">
+      <div class="c-table__header-row">
+        <!-- Drag handle column -->
+        <div class="c-table__header-cell" style="flex: initial; flex-shrink: 0">
+          <div class="u-w-f16 u-h-f16"></div>
         </div>
-      }
+
+        <div class="c-table__header-cell" style="flex-grow: 1">
+          <span>{{ 'GENERAL:BG' | translate: { set: 'point/general' } }}</span>
+        </div>
+        <div class="c-table__header-cell" style="flex-grow: 1">
+          <span>{{ 'CORE:FOCUS' | translate }}</span>
+        </div>
+        <div class="c-table__header-cell" style="flex-grow: 2">
+          <span>{{ 'CORE:HEADING' | translate }}</span>
+        </div>
+        <!-- <div class="c-table__header-cell u-justify-end" style="flex-grow: 1">
+          <span>{{ 'CORE:MORE' | translate }}</span>
+        </div> -->
+        <div class="c-table__header-cell u-justify-end" style="flex-grow: 1">
+          <span>{{ 'CORE:INVERSE' | translate }}</span>
+        </div>
+        <div class="c-table__header-cell u-justify-end" style="flex-grow: 2">
+          <span>{{ 'CORE:ACTIONS' | translate }}</span>
+        </div>
+      </div>
+
+      <div
+        class="c-table__body"
+        cdkDropList
+        cdkDropListLockAxis="y"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (row of items().controls; track row; let index = $index) {
+          <div
+            [formGroup]="row"
+            class="c-table__row"
+            tabindex="0"
+            style="--pf-table-row-level: 1"
+            cdkDrag
+            cdkDragPreviewContainer="parent"
+          >
+            <div class="c-table__cell" style="flex: initial; flex-shrink: 0">
+              <div class="c-draggable-block__handle" cdkDragHandle>
+                <div class="c-draggable-block__prepend">
+                  <pf-icon class="u-w-f16 u-h-f16" name="dots-grid-vertical"></pf-icon>
+                </div>
+              </div>
+            </div>
+
+            <div class="c-table__cell" style="flex-grow: 1">
+              @let background = row.controls.background.value;
+              <pfx-background-picker
+                [color]="background.color"
+                (colorChange)="updateBackground(row, { color: $event })"
+                [imagePath]="background.imagePath"
+                (imagePathChange)="updateBackground(row, { imagePath: $event })"
+                [imageName]="background.imageName"
+                (imageNameChange)="updateBackground(row, { imageName: $event })"
+                [opacity]="background.opacity"
+                (opacityChange)="updateBackground(row, { opacity: '' + $event })"
+                [isVideo]="background.isVideo"
+                (isVideoChange)="updateBackground(row, { isVideo: $event })"
+                [asset]="background.asset"
+                (assetChange)="updateAsset(row, $event)"
+                [comId]="10930"
+                [laeId]="2"
+                [ariaLabel]="'CORE:BACKGROUND' | translate"
+                class="dropdown-max-height"
+              ></pfx-background-picker>
+            </div>
+            <div class="c-table__cell" style="flex-grow: 1">
+              <pfx-focus-picker
+                [focusValue]="row.controls.focus.value"
+                (focusValueChange)="
+                  row.controls.focus.setValue($event); row.controls.focus.markAsDirty()
+                "
+                [disabled]="row.controls.focus.disabled"
+                [ariaLabel]="'CORE:FOCUS' | translate"
+              ></pfx-focus-picker>
+            </div>
+            <div class="c-table__cell" style="flex-grow: 2">
+              <div class="c-form-control c-form-control--small">
+                <!-- No id: rows repeat, so each input is named with aria-label instead -->
+                <input
+                  spellcheck="false"
+                  autocomplete="off"
+                  type="text"
+                  [attr.aria-label]="'CORE:HEADING' | translate"
+                  formControlName="text"
+                />
+              </div>
+            </div>
+            <!-- <div class="c-table__cell" style="flex-grow: 1">
+              <div class="u-mat-body u-text-secondary-100"></div>
+            </div> -->
+            <div class="c-table__cell u-justify-end" style="flex-grow: 1">
+              <div class="u-mat-body u-text-secondary-100">
+                <div class="c-switch c-switch--spaceless">
+                  <input
+                    class="c-switch__input"
+                    type="checkbox"
+                    role="switch"
+                    [attr.aria-label]="'CORE:INVERSE' | translate"
+                    formControlName="inverse"
+                  />
+
+                  <div class="c-switch__control"></div>
+                </div>
+              </div>
+            </div>
+            <div class="c-table__cell u-justify-end" style="flex-grow: 2">
+              <button
+                type="button"
+                class="u-d-fx u-p-2 u-mr-1"
+                aria-label=" {{ 'CORE:DUPLICATE' | translate }}"
+                [pfTooltip]="'CORE:DUPLICATE' | translate"
+                (click)="duplicateItem(index)"
+              >
+                <pf-icon class="u-w-f16 u-h-f16" name="copy"></pf-icon>
+              </button>
+              <button
+                type="button"
+                class="u-d-fx u-p-2"
+                aria-label=" {{ 'CORE:DELETE' | translate }}"
+                [pfTooltip]="'CORE:DELETE' | translate"
+                (click)="deleteItem(index)"
+              >
+                <pf-icon class="u-w-f16 u-h-f16" name="trash"></pf-icon>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
     </div>
   </div>
 </div>

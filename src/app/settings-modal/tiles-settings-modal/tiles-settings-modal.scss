@@ -1,6 +1,8 @@
+// 1160px, or the window width on smaller screens. 2.5rem (40px) per side matches the
+// gap Papirfly's own fluid modals keep from the window edge
 .c-modal__dialog {
   width: 1160px;
-  max-width: 1160px;
+  max-width: 100%;
 }
 
 .heading h1 {

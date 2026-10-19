@@ -1,3 +1,14 @@
+// Component tags are inline by default; as a block it takes the width of the modal's
+// content area, which the scroll wrapper below needs to know when to scroll
+:host {
+  display: block;
+}
+
+// Scrolls the table sideways when it's wider than the modal
+.items-list__scroll {
+  overflow-x: auto;
+}
+
 // The row being dragged
 .cdk-drag-preview {
   box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
