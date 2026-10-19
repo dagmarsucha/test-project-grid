@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { getState } from '@ngrx/signals';
 import {
   PfxTranslateDynamicPipe,
   PfxTranslateService,
@@ -15,7 +15,7 @@ import {
 } from '@papirfly-ui/icons';
 import { SettingsStore } from '../../shared/settings-store';
 import { ItemsList } from '../items-list/items-list';
-import { createSettingsForm, fillSettingsForm } from '../settings-form';
+import { createSettingsForm, fillSettingsForm, toSettings } from '../settings-form';
 import { TabGeneral } from '../tab-general/tab-general';
 
 export type SettingsTabsType = 'general' | 'animations';
@@ -37,6 +37,11 @@ export class TilesSettingsModal {
 
   protected readonly currentTab = signal<SettingsTabsType>('general');
 
+  // 'loading' shows the overlay. Saving is only allowed once 'loaded': before that the
+  // form is empty, and saving it would wipe the items. 'error' hides the overlay so the
+  // modal can still be closed
+  protected readonly loadState = signal<'loading' | 'loaded' | 'error'>('loading');
+
   constructor() {
     this._iconsRegistryService.registerIcons([
       papirflyIconsSquares,
@@ -45,7 +50,21 @@ export class TilesSettingsModal {
       papirflyIconsCross,
     ]);
 
-    fillSettingsForm(this.form, this._fb, getState(this._store));
+    // Load fresh settings every time the modal opens. takeUntilDestroyed cancels the
+    // request if the modal is closed before the response arrives
+    this._store
+      .loadSettings()
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (settings) => {
+          fillSettingsForm(this.form, this._fb, settings);
+          this.loadState.set('loaded');
+        },
+        error: (err) => {
+          console.error('Loading settings failed:', err);
+          this.loadState.set('error');
+        },
+      });
   }
 
   protected onClose(): void {
@@ -58,12 +77,17 @@ export class TilesSettingsModal {
   }
 
   protected onSave(): void {
-    // const changes = toSettings(this.form, getState(this._store));
-    // this._store.saveSettings(changes).subscribe({
-    //   next: () => this._modalRef.close(true),
-    //   // Keep the modal open so the user's edits aren't lost
-    //   error: (err) => console.error('Saving settings failed:', err),
-    // });
+    // The button is disabled too, but Enter in an input also submits the form
+    if (this.loadState() !== 'loaded') {
+      return;
+    }
+    const changes = toSettings(this.form);
+    this._store.saveSettings(changes).subscribe({
+      // The next open loads fresh settings, so new items get their server ids then
+      next: () => this._modalRef.close(true),
+      // Keep the modal open so the user's edits aren't lost
+      error: (err) => console.error('Saving settings failed:', err),
+    });
   }
 
   protected onTabClick(tab: SettingsTabsType): void {

@@ -1,0 +1,18 @@
+// The row being dragged
+.cdk-drag-preview {
+  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+}
+
+// The gap left where the row will land
+.cdk-drag-placeholder {
+  opacity: 0.3;
+}
+
+// Other rows slide out of the way instead of jumping
+.cdk-drop-list-dragging .c-table__row:not(.cdk-drag-placeholder) {
+  transition: transform 200ms ease;
+}
+
+.cdk-drag-animating {
+  transition: transform 200ms ease;
+}

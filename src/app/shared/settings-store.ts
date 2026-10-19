@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { getState, patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { IComponentResponse } from './commonTypes';
 
 type SettingsState = IComponentResponse;
@@ -45,16 +45,26 @@ export const SettingsStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withMethods((store, http = inject(HttpClient)) => ({
-    loadSettings() {
-      http
+    // Returns the request so the caller can wait for the data; the store is updated
+    // when the response arrives
+    loadSettings(): Observable<IComponentResponse> {
+      return http
         .get<IComponentResponse>(COMPONENT_URL, {
           params: { mode: 'editor', do: 'control-22815-load' },
           headers: AJAX_HEADERS,
         })
-        .subscribe({
-          next: (response) => patchState(store, response),
-          error: (err) => console.error('Loading settings failed:', err),
-        });
+        .pipe(
+          // Without a login the server still answers 200, with a redirect to the login
+          // page instead of the settings. Turn that into an error so callers' error
+          // handling runs
+          map((response) => {
+            if ('redirect' in response) {
+              throw new Error('Not logged in: the server answered with a login redirect');
+            }
+            return response;
+          }),
+          tap((response) => patchState(store, response)),
+        );
     },
     // Sends the whole object the server loaded, with the changes applied. The server
     // expects every field back, including the ones the app never edits (animations,

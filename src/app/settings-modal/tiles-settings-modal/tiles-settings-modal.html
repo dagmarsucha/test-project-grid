@@ -52,7 +52,9 @@
                     aria-controls="tab-2-content"
                     (click)="onTabClick('animations')"
                   >
-                    <span class="c-tabs__label">{{ 'component.basic_tiles.animations' | translate: { set: 'point/tiles' } }}</span>
+                    <span class="c-tabs__label">{{
+                      'component.basic_tiles.animations' | translate: { set: 'point/tiles' }
+                    }}</span>
                   </button>
                 </li>
               </ul>
@@ -91,7 +93,11 @@
               </div>
             </div>
             <div class="c-modal__footer">
-              <button type="submit" class="c-button c-button--primary c-button--fluid u-my-4">
+              <button
+                type="submit"
+                class="c-button c-button--primary c-button--fluid u-my-4"
+                [disabled]="loadState() !== 'loaded'"
+              >
                 <pf-icon class="u-w-f16 u-h-f16 u-mr-2" name="save" slot="prepend"></pf-icon>
                 <span class="c-button__text">{{ 'CORE:SAVE' | translate }}</span>
               </button>
@@ -108,12 +114,23 @@
               </button>
             </div>
 
-            <div class="u-px-4 u-pt-2">
-              <h2 class="u-mb-8">{{ 'component.basic_tiles.tiles_title' | translate }}</h2>
+            <div class="u-px-4">
               <items-list [items]="form.controls.items"></items-list>
             </div>
           </div>
         </div>
+
+        <!-- Last child of c-modal__inner (position: relative), so it covers the whole modal -->
+        @if (loadState() === 'loading') {
+          <div class="c-loading-overlay is-active">
+            <div class="c-loading-overlay__inner">
+              <div class="c-loading-overlay__item"></div>
+              <div class="c-loading-overlay__item"></div>
+              <div class="c-loading-overlay__item"></div>
+            </div>
+            <div class="c-loading-overlay__backdrop"></div>
+          </div>
+        }
       </div>
     </div>
   </form>

@@ -1,11 +1,18 @@
+<div class="u-d-fx u-justify-end u-mb-4">
+  <button type="button" class="c-button c-button--primary u-py-2 u-px-2" (click)="addItem()">
+    <pf-icon class="u-w-f12 u-h-f12 u-mr-1" name="plus" slot="prepend"></pf-icon>
+    <span class="c-button__text">{{ 'component.basic_tiles.add_tile' | translate }}</span>
+  </button>
+</div>
+
 <div class="c-table u-wmin-100" style="width: max-content">
   <div class="c-table__container">
     <div class="c-table__header-row">
+      <!-- Drag handle column -->
       <div class="c-table__header-cell" style="flex: initial; flex-shrink: 0">
-        <div class="c-check c-check--multiple c-check--spaceless">
-          <input class="c-check__control" type="checkbox" aria-label="Select all rows" />
-        </div>
+        <div class="u-w-f16 u-h-f16"></div>
       </div>
+
       <div class="c-table__header-cell" style="flex-grow: 1">
         <span>{{ 'GENERAL:BG' | translate: { set: 'point/general' } }}</span>
       </div>
@@ -26,18 +33,29 @@
       </div>
     </div>
 
-    <div class="c-table__body">
-      @for (row of items().controls; track row.controls.id.value) {
-        <div [formGroup]="row" class="c-table__row" tabindex="0" style="--pf-table-row-level: 1">
+    <div
+      class="c-table__body"
+      cdkDropList
+      cdkDropListLockAxis="y"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (row of items().controls; track row; let index = $index) {
+        <div
+          [formGroup]="row"
+          class="c-table__row"
+          tabindex="0"
+          style="--pf-table-row-level: 1"
+          cdkDrag
+          cdkDragPreviewContainer="parent"
+        >
           <div class="c-table__cell" style="flex: initial; flex-shrink: 0">
-            <div class="c-check c-check--spaceless">
-              <input
-                class="c-check__control"
-                type="checkbox"
-                [attr.aria-label]="'Select row ' + row.controls.text.value"
-              />
+            <div class="c-draggable-block__handle" cdkDragHandle>
+              <div class="c-draggable-block__prepend">
+                <pf-icon class="u-w-f16 u-h-f16" name="dots-grid-vertical"></pf-icon>
+              </div>
             </div>
           </div>
+
           <div class="c-table__cell" style="flex-grow: 1">
             @let background = row.controls.background.value;
             <pfx-background-picker
@@ -56,6 +74,7 @@
               [comId]="10930"
               [laeId]="2"
               [ariaLabel]="'CORE:BACKGROUND' | translate"
+              class="dropdown-max-height"
             ></pfx-background-picker>
           </div>
           <div class="c-table__cell" style="flex-grow: 1">
@@ -99,7 +118,24 @@
             </div>
           </div>
           <div class="c-table__cell" style="flex-grow: 1">
-            <div class="u-mat-body u-text-secondary-100"></div>
+            <button
+              type="button"
+              class="u-d-fx u-p-2 u-mr-1"
+              aria-label=" {{ 'CORE:DUPLICATE' | translate }}"
+              [pfTooltip]="'CORE:DUPLICATE' | translate"
+              (click)="duplicateItem(index)"
+            >
+              <pf-icon class="u-w-f16 u-h-f16" name="copy"></pf-icon>
+            </button>
+            <button
+              type="button"
+              class="u-d-fx u-p-2"
+              aria-label=" {{ 'CORE:DELETE' | translate }}"
+              [pfTooltip]="'CORE:DELETE' | translate"
+              (click)="deleteItem(index)"
+            >
+              <pf-icon class="u-w-f16 u-h-f16" name="trash"></pf-icon>
+            </button>
           </div>
         </div>
       }

@@ -1,2 +1,9 @@
 @import '@papirfly-ui/core/scss';
 @import '@angular/cdk/overlay-prebuilt.css';
+
+// Background picker dropdown: show its full content instead of the default 300px.
+// Global, because the dropdown renders in a CDK overlay outside any component, so
+// component styles can't reach it. !important beats Papirfly's more specific rule.
+.c-dropdown__dropdown.dropdown-max-height {
+  max-height: calc(100dvh - 1rem) !important;
+}

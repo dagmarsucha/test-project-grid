@@ -9,6 +9,9 @@ export type ItemForm = FormGroup<{
   inverse: FormControl<boolean>;
   focus: FormControl<string>;
   background: FormControl<IBackground>;
+  // The full item the row was made from, so fields the table doesn't edit survive
+  // saving and duplicating
+  source: FormControl<ISettings>;
 }>;
 
 export type SettingsForm = ReturnType<typeof createSettingsForm>;
@@ -53,7 +56,36 @@ export function createItemForm(fb: NonNullableFormBuilder, item: ISettings): Ite
     focus: item.background.position,
     // The whole background object in one control; the picker edits its fields
     background: fb.control<IBackground>(item.background),
+    source: fb.control<ISettings>(item),
   });
+}
+
+// Turns a row back into the item shape the API uses
+export function toItem(row: ItemForm): ISettings {
+  const { source, inverse, focus, background, ...edited } = row.getRawValue();
+  return {
+    ...source,
+    ...edited,
+    positive: inverse ? 1 : 0,
+    background: { ...background, position: focus },
+  };
+}
+
+// A blank item for a row added in the table. The server assigns the real id on save
+export function newItem(): ISettings {
+  return {
+    id: 0,
+    icon: '',
+    text: '',
+    additionalText: null,
+    positive: 0,
+    link: '',
+    target: '_self',
+    targetNumber: 0,
+    selectedPage: null,
+    selectedUserGroups: [],
+    background: EMPTY_BACKGROUND,
+  };
 }
 
 // Applies one field changed in a background picker to a background control
@@ -97,28 +129,14 @@ export function fillSettingsForm(
   }
 }
 
-export function toSettings(
-  form: SettingsForm,
-  original: IComponentSettings,
-): Partial<IComponentSettings> {
-  const { general, items } = form.getRawValue();
-  const { inverse, ...rest } = general;
+// Items come from the form rows, so added, removed, duplicated and reordered rows
+// are all reflected, in the order shown in the table
+export function toSettings(form: SettingsForm): Partial<IComponentSettings> {
+  const { inverse, ...general } = form.controls.general.getRawValue();
 
   return {
-    ...rest,
+    ...general,
     darktheme: inverse,
-    items: original.items.map((originalItem) => {
-      const edited = items.find((item) => item.id === originalItem.id);
-      if (!edited) {
-        return originalItem;
-      }
-      const { inverse: itemInverse, focus, background, ...editedRest } = edited;
-      return {
-        ...originalItem,
-        ...editedRest,
-        positive: itemInverse ? 1 : 0,
-        background: { ...background, position: focus },
-      };
-    }),
+    items: form.controls.items.controls.map(toItem),
   };
 }
