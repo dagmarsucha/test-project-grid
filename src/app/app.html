@@ -1,3 +1,24 @@
-<app-header-bar></app-header-bar>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+@if (loadState() === 'loading') {
+  <div class="c-loading-overlay is-active">
+    <div class="c-loading-overlay__inner">
+      <div class="c-loading-overlay__item"></div>
+      <div class="c-loading-overlay__item"></div>
+      <div class="c-loading-overlay__item"></div>
+    </div>
+    <div class="c-loading-overlay__backdrop"></div>
+  </div>
+}
+
+@if (loadState() === 'loaded') {
+  <app-header-bar></app-header-bar>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+}
+
+@if (loadState() === 'error') {
+  <div class="u-pos-f u-h-100 u-w-100">
+    <div class="u-d-fx u-h-100 u-w-100 u-justify-center u-align-items-center">
+      <h2>Content can’t be loaded, please try again later</h2>
+    </div>
+  </div>
+}

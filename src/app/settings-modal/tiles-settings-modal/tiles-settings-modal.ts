@@ -13,6 +13,8 @@ import {
   papirflyIconsSave,
   papirflyIconsSquares,
 } from '@papirfly-ui/icons';
+import { combineLatest } from 'rxjs';
+import { PagesStore } from '../../shared/pages-store';
 import { SettingsStore } from '../../shared/settings-store';
 import { ItemsList } from '../items-list/items-list';
 import { createSettingsForm, fillSettingsForm, toSettings } from '../settings-form';
@@ -27,7 +29,8 @@ export type SettingsTabsType = 'general' | 'animations';
   styleUrl: './tiles-settings-modal.scss',
 })
 export class TilesSettingsModal {
-  private readonly _store = inject(SettingsStore);
+  private readonly _settingsStore = inject(SettingsStore);
+  private readonly _pagesStore = inject(PagesStore);
   private readonly _fb = inject(NonNullableFormBuilder);
   private readonly _modalRef = inject(PfModalRef);
   private readonly _translateService = inject(PfxTranslateService);
@@ -52,13 +55,17 @@ export class TilesSettingsModal {
 
     // Load fresh settings every time the modal opens. takeUntilDestroyed cancels the
     // request if the modal is closed before the response arrives
-    this._store
-      .loadSettings()
+
+    combineLatest({
+      settings: this._settingsStore.loadSettings(),
+      pages: this._pagesStore.loadPages(),
+    })
       .pipe(takeUntilDestroyed())
       .subscribe({
-        next: (settings) => {
+        next: ({ settings, pages }) => {
           fillSettingsForm(this.form, this._fb, settings);
           this.loadState.set('loaded');
+          console.log('Pages data: ', pages);
         },
         error: (err) => {
           console.error('Loading settings failed:', err);
@@ -82,7 +89,7 @@ export class TilesSettingsModal {
       return;
     }
     const changes = toSettings(this.form);
-    this._store.saveSettings(changes).subscribe({
+    this._settingsStore.saveSettings(changes).subscribe({
       // The next open loads fresh settings, so new items get their server ids then
       next: () => this._modalRef.close(true),
       // Keep the modal open so the user's edits aren't lost
